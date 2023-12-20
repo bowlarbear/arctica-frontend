@@ -1,0 +1,29 @@
+name: Compile arctica-frontend CI
+
+on:
+  push:
+    branches: [ "main", "actionstest" ]
+  pull_request:
+    branches: [ "main", "actionstest" ]
+
+  workflow_dispatch:
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [12.x, 12.22.9, 14.x, 14.6.0]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm install
+      - name: Compile the frontend
+        run: npm run build

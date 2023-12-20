@@ -1,0 +1,54 @@
+<template>
+    <div v-if="this.loading == true">
+        <Loader/>
+    </div>
+    <div v-else class="page">
+        <header>
+            <h1>4 of 5 Signing Successful</h1>
+            <h2>Please power off this machine. Swap the current HW for any other Hardware Wallet you haven't yet signed with and power on this machine.</h2>
+            <h2>You may close this window.</h2>
+        </header>
+        
+    
+    </div>
+    
+    </template>
+    
+    <script>
+    import store from '../../../store.js'
+    import Loader from '@/components/loader'
+    const invoke = window.__TAURI__.invoke
+    
+    export default {
+      name: '4of5success',
+      components: {
+        Loader,
+        },
+        computed:{
+        },
+        mounted(){
+            invoke('stop_bitcoind').then((res) =>{
+                store.commit('setDebug', `stopping bitcoin daemon ${res}`)
+                this.loading = false
+            }).catch((e)=>{
+                store.commit('setDebug', `error stopping bitcoin daemon: ${e}`)
+                store.commit('setErrorMessage', `Error with stopping bitcoin daemon Error Code: 2of5success-1 Response: ${e}`)
+                this.$router.push({ name:'Error' })
+        })
+        }, 
+        data(){
+            return{
+                loading: true,
+            }
+        }
+    }
+    </script>
+    
+    <style>
+    
+    .strong{
+        font-weight: 800;
+    }
+    </style>
+    
+

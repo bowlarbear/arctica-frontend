@@ -121,18 +121,18 @@ export default {
             })
           }
           
-      })
-      .catch((e) => {
-        store.commit('setDebug', `error calculating shards on recovery cd: ${e}`)
-        store.commit('setErrorMessage', `Error calculating shard count on disk Error code: RecoveryAdditional1 Response: ${e}`)
-        this.$router.push({ name: 'Error' })
-      })
+        })
+        .catch((e) => {
+          store.commit('setDebug', `error calculating shards on recovery cd: ${e}`)
+          store.commit('setErrorMessage', `Error calculating shard count on disk Error code: RecoveryAdditional1 Response: ${e}`)
+          this.$router.push({ name: 'Error' })
+        })
       })
       .catch((e)=>{
         store.commit('setDebug', `error collecting shards ${e}`)
-        store.commit('setErrorMessage', `Error calculating shard count on disk Error code: RecoveryAdditional2 Response: ${e}`)
+        store.commit('setErrorMessage', `Error collecting shards Error code: RecoveryAdditional2 Response: ${e}`)
         this.$router.push({ name: 'Error' })
-      })      
+      })    
       
     },
     data() {

@@ -13,6 +13,7 @@ the second conditional rendering below appears if the user has booted from HW 2-
       <h2>If you would like to restore a backup CD, click to proceed.</h2>
       <h4 v-if="this.fullySigned == true">* Please switch to HW 1, this PSBT is fully signed</h4>
       <h4 v-if="this.badCD == true">* Error reading the CD. Please reinsert and try again</h4>
+      <h4 v-if="this.noPSBT == true">* No PSBT Found. Please log in to HW 1 to create a PSBT.</h4>
     </header>
     <div class="form_container">
       <form>
@@ -66,71 +67,81 @@ export default {
                       store.commit('setDebug', 'Sending user to RecoveryAdditional')
                       this.$router.push({ name: 'RecoveryAdditional' })
                       break
-                }//immediate wallet conditions
-                //if the PSBT key is present, and = 1OF2 user is attempting to sign from immediate wallet
-                else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '1OF2'){
-                  this.loading = false
-                  store.commit('setDebug', `Transfer CD detected 1OF2`)
-                  store.commit('setDebug', 'Sending user to sign2of2')
-                  this.$router.push({ name: 'sign2of2' })
-                  break
-                }
-                //if the PSBT key is present, and = 2OF2 user is attempting to broadcast a signed immediate transaction
-                //TODO, this condition can NEVER normally happen because the user should be broadcasting from HW 1...however we should still handle this condition with a warning
-                else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '2OF2'){
-                  this.fullySigned = true
-                  this.loading = false
-                  store.commit('setDebug', `Transfer CD detected 2OF2`)
-                  break
-                }//delayed wallet conditions
-                //if the PSBT key is present, and = 5OF5 user is attempting to broadcast a signed delayed transaction
-                //TODO, this condition can NEVER normally happen because the user should be broadcasting from HW 1...however we should still handle this condition with a warning
-                else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '5OF5'){
-                  this.fullySigned = true
-                  this.loading = false
-                  store.commit('setDebug', `Transfer CD detected 5OF5`)
-                  break
-                }
-                //if the PSBT key is present, and = 1OF5 user is attempting to sign from delayed wallet
-                else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '1OF5'){
-                  this.loading = false
-                  store.commit('setDebug', `Transfer CD detected 1OF5`)
-                  store.commit('setDebug', 'Sending user to sign2of5')
-                  this.$router.push({ name: 'sign2of5' })
-                  break
-                }
-                //if the PSBT key is present, and = 2OF5 user is attempting to sign from delayed wallet
-                else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '2OF5'){
-                  this.loading = false
-                  store.commit('setDebug', `Transfer CD detected 2OF5`)
-                  store.commit('setDebug', 'Sending user to sign3of5')
-                  this.$router.push({ name: 'sign3of5' })
-                  break
-                }
-                //if the PSBT key is present, and = 3OF5 user is attempting to sign from delayed wallet
-                else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '3OF5'){
-                  this.loading = false
-                  store.commit('setDebug', `Transfer CD detected 3OF5`)
-                  store.commit('setDebug', 'Sending user to sign4of5')
-                  this.$router.push({ name: 'sign4of5' })
-                  break
-                }
-                //if the PSBT key is present, and = 4OF5 user is attempting to sign from delayed wallet
-                else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '4OF5'){
-                  this.loading = false
-                  store.commit('setDebug', `Transfer CD detected 4OF5`)
-                  store.commit('setDebug', 'Sending user to sign5of5')
-                  this.$router.push({ name: 'sign5of5' })
-                  break
-                }
-                //if no valid config value is found, either a blank cd is inserted or user potentially hit the button too fast
-                else{
+                  }
+                  else if (String(it[0]).toUpperCase() == 'TYPE' && String(it[1]).toUpperCase() == 'TRANSFERCD'){
+                    this.transferCD = true
+                    break
+                  }
+                  //immediate wallet conditions
+                  //if the PSBT key is present, and = 1OF2 user is attempting to sign from immediate wallet
+                  else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '1OF2'){
                     this.loading = false
-                    store.commit('setDebug', `fall back inside for loop triggered; key: ${String(it[0]).toUpperCase()} value: ${String(it[1]).toUpperCase()}`)
-                    store.commit('setDebug', `Blank CD detected, something is wrong.`)
-                    store.commit('setErrorMessage', `Error could not find a valid transfer or recovery CD, Error Code: Boot4`)
-                    this.$router.push({ name: 'Error' })
-                }
+                    store.commit('setDebug', `Transfer CD detected 1OF2`)
+                    store.commit('setDebug', 'Sending user to sign2of2')
+                    this.$router.push({ name: 'sign2of2' })
+                    break
+                  }
+                  //if the PSBT key is present, and = 2OF2 user is attempting to broadcast a signed immediate transaction
+                  //TODO, this condition can NEVER normally happen because the user should be broadcasting from HW 1...however we should still handle this condition with a warning
+                  else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '2OF2'){
+                    this.fullySigned = true
+                    this.loading = false
+                    store.commit('setDebug', `Transfer CD detected 2OF2`)
+                    break
+                  }//delayed wallet conditions
+                  //if the PSBT key is present, and = 5OF5 user is attempting to broadcast a signed delayed transaction
+                  //TODO, this condition can NEVER normally happen because the user should be broadcasting from HW 1...however we should still handle this condition with a warning
+                  else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '5OF5'){
+                    this.fullySigned = true
+                    this.loading = false
+                    store.commit('setDebug', `Transfer CD detected 5OF5`)
+                    break
+                  }
+                  //if the PSBT key is present, and = 1OF5 user is attempting to sign from delayed wallet
+                  else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '1OF5'){
+                    this.loading = false
+                    store.commit('setDebug', `Transfer CD detected 1OF5`)
+                    store.commit('setDebug', 'Sending user to sign2of5')
+                    this.$router.push({ name: 'sign2of5' })
+                    break
+                  }
+                  //if the PSBT key is present, and = 2OF5 user is attempting to sign from delayed wallet
+                  else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '2OF5'){
+                    this.loading = false
+                    store.commit('setDebug', `Transfer CD detected 2OF5`)
+                    store.commit('setDebug', 'Sending user to sign3of5')
+                    this.$router.push({ name: 'sign3of5' })
+                    break
+                  }
+                  //if the PSBT key is present, and = 3OF5 user is attempting to sign from delayed wallet
+                  else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '3OF5'){
+                    this.loading = false
+                    store.commit('setDebug', `Transfer CD detected 3OF5`)
+                    store.commit('setDebug', 'Sending user to sign4of5')
+                    this.$router.push({ name: 'sign4of5' })
+                    break
+                  }
+                  //if the PSBT key is present, and = 4OF5 user is attempting to sign from delayed wallet
+                  else if(String(it[0]).toUpperCase() == 'PSBT' && String(it[1]).toUpperCase() == '4OF5'){
+                    this.loading = false
+                    store.commit('setDebug', `Transfer CD detected 4OF5`)
+                    store.commit('setDebug', 'Sending user to sign5of5')
+                    this.$router.push({ name: 'sign5of5' })
+                    break
+                  }
+                  else if(this.transferCD == true){
+                    store.commit('setDebug', `transfer CD found with no PSBT state`)
+                    this.loading = false
+                    this.noPSBT = true
+                  }
+                  //if no valid config value is found, either a blank cd is inserted or user potentially hit the button too fast
+                  else{
+                      this.loading = false
+                      store.commit('setDebug', `fall back inside for loop triggered; key: ${String(it[0]).toUpperCase()} value: ${String(it[1]).toUpperCase()}`)
+                      store.commit('setDebug', `Blank CD detected, something is wrong.`)
+                      store.commit('setErrorMessage', `Error could not find a valid transfer or recovery CD, Error Code: Boot4`)
+                      this.$router.push({ name: 'Error' })
+                  }
               }
             }).catch((e)=>{
               store.commit('setDebug', `error reading CD Error Code: Boot5 Response: ${e}`)
@@ -187,6 +198,8 @@ export default {
     checkbox: false,
     fullySigned: false,
     badCD: false,
+    transferCD: false,
+    noPSBT: false,
     }
   },
 }

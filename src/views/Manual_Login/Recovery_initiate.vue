@@ -8,6 +8,7 @@
     <header>
       <h1>Recovery disk created</h1>
       <h2>Please power off this machine, insert your next available Hardware Wallet and reboot.</h2>
+      <h2>You may now close this window.</h2>
     </header>
   </div>
    
@@ -49,8 +50,17 @@ export default {
           //creating recovery cd
           invoke('recovery_initiate').then((res)=>{
             store.commit('setDebug', `creating recovery cd ${res}`)
-            this.loading=false
-            this.cdfinished=true
+            store.commit('setLoadMessage', 'stopping Bitcoin Daemon...')
+            invoke('stop_bitcoind').then((res)=>{
+              store.commit('setDebug', `stopped bitcoin daemon ${res}`)
+              this.loading=false
+              this.cdfinished=true
+            }).catch((e)=>{
+              store.commit('setDebug', `error Stopping Bitcoin Daemon ${e}`)
+              store.commit('setErrorMessage', `Error stopping Bitcoin Daemon Error code: RecoveryInitiate-1 Response: ${e}`)
+              this.$router.push({ name: 'Error' })
+            })
+
           })
           .catch((e)=>{
             store.commit('setDebug', `error creating recovery cd ${e}`)

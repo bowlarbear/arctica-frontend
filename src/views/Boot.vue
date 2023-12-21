@@ -11,9 +11,9 @@ the second conditional rendering below appears if the user has booted from HW 2-
       <h2>Please insert a transfer CD.</h2>
       <h2>If you do not have a transfer CD, please insert Hardware Wallet 1 and reboot this machine.</h2>
       <h2>If you would like to restore a backup CD, click to proceed.</h2>
-      <h4 v-if="this.fullySigned == true">* Please switch to HW 1, this PSBT is fully signed</h4>
+      <h4 v-if="this.fullySigned == true">* Please switch to HW 1, your PSBT is fully signed</h4>
       <h4 v-if="this.badCD == true">* Error reading the CD. Please reinsert and try again</h4>
-      <h4 v-if="this.noPSBT == true">* No PSBT Found. Please log in to HW 1 to create a PSBT.</h4>
+      <h4 v-if="this.noPSBT == true">* No PSBT Found on CD. Please log in to HW 1 to create a PSBT.</h4>
     </header>
     <div class="form_container">
       <form>
@@ -47,6 +47,7 @@ export default {
           this.loading = true
           //reset error feedback
           this.badCD = false
+          this.noPSBT = false
           store.commit('setLoadMessage', 'copying CD to ramdisk')
           //mount the inserted disc and copy the contents to ramdisk
           invoke('copy_cd_to_ramdisk').then((res) =>{
@@ -129,6 +130,7 @@ export default {
                     this.$router.push({ name: 'sign5of5' })
                     break
                   }
+                  //if the user is trying to log in with a blank transfer CD (can happen after completing a recovery CD or a failed PSBT export)
                   else if(this.transferCD == true){
                     store.commit('setDebug', `transfer CD found with no PSBT state`)
                     this.loading = false

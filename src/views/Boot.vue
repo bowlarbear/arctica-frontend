@@ -131,18 +131,20 @@ export default {
                     break
                   }
                   //if the user is trying to log in with a blank transfer CD (can happen after completing a recovery CD or a failed PSBT export)
+                  //NOTE: THIS WILL ALWAYS TRIGGER ON THE SECOND LOOP THROUGH CONFIG ON A TRANFERCD IF THERE IS NO PSBT = VALUE
                   else if(this.transferCD == true){
                     store.commit('setDebug', `transfer CD found with no PSBT state`)
                     this.loading = false
                     this.noPSBT = true
+                    break
                   }
                   //if no valid config value is found, either a blank cd is inserted or user potentially hit the button too fast
                   else{
-                      this.loading = false
                       store.commit('setDebug', `fall back inside for loop triggered; key: ${String(it[0]).toUpperCase()} value: ${String(it[1]).toUpperCase()}`)
-                      store.commit('setDebug', `Blank CD detected, something is wrong.`)
-                      store.commit('setErrorMessage', `Error could not find a valid transfer or recovery CD, Error Code: Boot4`)
-                      this.$router.push({ name: 'Error' })
+                      store.commit('setDebug', `Blank CD detected, something is wrong. Error Code: Boot4`)
+                      this.loading = false
+                      this.noPSBT = true
+                      break
                   }
               }
             }).catch((e)=>{

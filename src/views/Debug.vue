@@ -119,6 +119,8 @@
     <button @click="copy_cd_to_ramdisk()" class="btn">Copy CD to ramdisk</button>
     <br> 
     <button @click="pre_setup()" class="btn">go to pre-setup</button>
+    <br> 
+    <button @click="combine_shards()" class="btn">combine shards</button>
 
 
     <nav id="nav">Debug Nav bar (dangerous): 
@@ -242,6 +244,13 @@ const invoke = window.__TAURI__.invoke
 export default{
     name: 'Debug',
     methods:{
+        combine_shards(){
+            invoke('combine_shards').then((res)=>{
+                store.commit('setDebug', `combining shards: ${res}`)
+            }).catch((e)=>{
+                store.commit('setDebug', `error combining shards ${e}`)
+            })
+        },
         pre_setup(){
             this.$router.push({ name:'Pre-Setup1' })
         },

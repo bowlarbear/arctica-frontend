@@ -380,6 +380,11 @@ const routes = [
     component: () => import('../views/setup/1b.vue')
    },
    {
+    path: '/setup/1c',
+    name: 'Setup1c',
+    component: () => import('../views/setup/1c.vue')
+   },
+   {
     path: '/setup/2',
     name: 'Setup2',
     component: () => import('../views/setup/2.vue')

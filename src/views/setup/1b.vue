@@ -46,15 +46,7 @@ export default {
         invoke('check_network').then((res) => {
           store.commit('setDebug', `network connected: ${res}`)
           store.commit('setLoadMessage', `Initializing Arctica...`)
-          //init iso and then send user to setup3
-          invoke('init_iso').then(()=> {
-            store.commit('setDebug', 'ubuntu iso created successfully, sending to setup3')
-            this.$router.push({ name:'Setup3' })
-          }).catch((e) => {
-              store.commit('setDebug', `init_iso error: ${e}`)
-              store.commit('setErrorMessage', `Error in  init_iso. Error code: Setup1b-2 Response: ${e}`)
-              this.$router.push({ name: 'Error' })
-            })
+          this.$router.push({ name:'Setup1c' })
         }).catch((e) => {
           store.commit('setDebug', `Error No network connection found Error code: Setup1b-1 Response:: ${e}`)
           this.noNetwork = true
@@ -77,16 +69,8 @@ export default {
         this.loading = true
         store.commit('setDebug', `network connected: ${res}`)
         store.commit('setLoadMessage', `Initializing Arctica...`)
-        //init iso and then send user to setup3
-        invoke('init_iso').then(()=> {
-          store.commit('setDebug', 'ubuntu iso created successfully, sending to setup3')
-          this.$router.push({ name:'Setup3' })
-        }).catch((e) => {
-            store.commit('setDebug', `init_iso error: ${e}`)
-            store.commit('setErrorMessage', `Error in  init_iso. Error code: Setup1b-3 Response: ${e}`)
-            this.$router.push({ name: 'Error' })
-          })
-      }
+        this.$router.push({ name:'Setup1c' })
+        }
       })
       .catch((e) => {
           store.commit('setDebug', `error enabling networking: ${e}`)

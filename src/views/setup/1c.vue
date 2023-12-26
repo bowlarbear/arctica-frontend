@@ -4,22 +4,23 @@
 </div>
   <div v-else class="login">
     <header>
-      <h1>Please connect to the internet</h1>
-      <h2>You must be connected to a network in order to continue.</h2>
-      <h4 v-if="this.noNetwork == true">* Please verify that you are connected to the internet</h4>
+      <h1>What would you like to do?</h1>
+      <h2>If you are new to Arctica, click the "Create New Wallet" button below.</h2>
+      <h2>Check the box below if you would like to access other options.</h2>
     </header>
     <div class="form_container">
         <form>
             <div class="checkbox_container">
                 <input type="checkbox" v-model="checkbox" name="checkbox">
-                <label for="checkbox">I have connected to the internet.</label>
+                <label for="checkbox">I already have an Arctica wallet.</label>
             </div>
         </form>
             <div class="btn_container"> 
-                <button v-if="checkbox" @click="install()" class="btn">Proceed</Button>
-                <button v-else @click="warn()" class="btn3">Proceed</Button>
+                <button @click="install()" class="btn">Create new wallet</Button> 
+                <button v-if="checkbox" @click="sync()" class="btn2">Proceed to Node</button>
+                <button v-if="checkbox" @click="restoreBackup()" class="btn2">Restore a Backup</button>
             </div>
-        </div> 
+      </div>
   </div>
 <ProgressBar/>
 </template>
@@ -52,48 +53,34 @@ export default {
             this.$router.push({ name:'Setup3' })
           }).catch((e) => {
               store.commit('setDebug', `init_iso error: ${e}`)
-              store.commit('setErrorMessage', `Error in  init_iso. Error code: Setup1b-2 Response: ${e}`)
+              store.commit('setErrorMessage', `Error in  init_iso. Error code: Setup1c-2 Response: ${e}`)
               this.$router.push({ name: 'Error' })
             })
         }).catch((e) => {
-          store.commit('setDebug', `Error No network connection found Error code: Setup1b-1 Response:: ${e}`)
+          store.commit('setDebug', `Error No network connection found Error code: Setup1c-1 Response:: ${e}`)
           this.noNetwork = true
           this.loading = false
         })
+      },
+      sync(){
+        store.commit('setDebug', `returning user profile selected, sending user to node mode`)
+        this.$router.push({ name:'Node' })
+      },
+      restoreBackup(){
+        store.commit('setDebug', 'restore Backup button clicked, sending user to restoreBackup flow')
+        this.$router.push({ name: 'restoreBackup' })
       },
     },
     data(){
         return{
           checkbox: false,
           loading: false,
-          noNetwork: false,
         }
     },
     mounted(){
-      //enable networking so that the user may connect to a network
-      invoke('enable_networking').then((res) => {
-      store.commit('setDebug', `Enabling Networking: ${res}`)
-      if(res.includes("SUCCESS networking is already enabled")){
-        this.loading = true
-        store.commit('setDebug', `network connected: ${res}`)
-        store.commit('setLoadMessage', `Initializing Arctica...`)
-        //init iso and then send user to setup3
-        invoke('init_iso').then(()=> {
-          store.commit('setDebug', 'ubuntu iso created successfully, sending to setup3')
-          this.$router.push({ name:'Setup3' })
-        }).catch((e) => {
-            store.commit('setDebug', `init_iso error: ${e}`)
-            store.commit('setErrorMessage', `Error in  init_iso. Error code: Setup1b-3 Response: ${e}`)
-            this.$router.push({ name: 'Error' })
-          })
-      }
-      })
-      .catch((e) => {
-          store.commit('setDebug', `error enabling networking: ${e}`)
-          store.commit('setErrorMessage', `Error enabling networking Error code: Setup1b-4 Response: ${e}`)
-          this.$router.push({ name:'Error' })
-      })
-  },
+      //set a state value here that informs restore backup user is on the node machine
+      store.commit('setNode', true)
+    },
 }
 </script>
 

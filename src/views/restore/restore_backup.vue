@@ -83,7 +83,7 @@ export default {
           },
           goHome(){
             //NOTE this function's button will only show if the user is on their primary node machine
-            this.$router.push({ name: 'Node' })
+            this.$router.push({ name: 'Setup1c' })
           },
         },
       data(){

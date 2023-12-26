@@ -364,11 +364,12 @@ export default {
                 store.commit('setDebug', 'setup step 14 found, redirecting user to setup47a')
                 this.$router.push({ name: 'Setup47a' })
             }
-            else if(this.setupStep == 15 && this.hwNumber == 1){
-              store.commit('setSetupStage', 4)
-              store.commit('setDebug', 'setup step 15 found, redirecting user to setup50b')
-              this.$router.push({ name: 'Setup50b' })
-            }
+            //DEPRECATED REDIRECT
+            // else if(this.setupStep == 15 && this.hwNumber == 1){
+            //   store.commit('setSetupStage', 4)
+            //   store.commit('setDebug', 'setup step 15 found, redirecting user to setup50b')
+            //   this.$router.push({ name: 'Setup50b' })
+            // }
             //redirect user to boot screen if they have HW 2-7 or no HW inserted
             else if(this.hotHW == false){
               store.commit('setDebug', 'Cold Wallet Found, redirecting to the boot screen')

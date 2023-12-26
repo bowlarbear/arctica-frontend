@@ -223,8 +223,6 @@
     <router-link :to="{ name: 'Setup49b' }">Setup-49b</router-link>
     <br>
     <router-link :to="{ name: 'Setup50a' }">Setup-50a</router-link>
-    <router-link :to="{ name: 'Setup50b' }">Setup-50b</router-link>
-    <router-link :to="{ name: 'Setup51' }">Setup-51</router-link>
     <br>
     <router-link :to="{ name: 'tripwirePostSetup1' }">Tripwire-Post-Setup-1</router-link>
     <router-link :to="{ name: 'tripwirePostSetup2' }">Tripwire-Post-Setup-2</router-link>

@@ -51,8 +51,9 @@
   <h2>Please avoid clicking the "X" Button to close the app.</h2>
   <h2>What would you like to do?</h2>
   <div class="btn_container"> 
-      <button @click="login()" class="btn">Access Wallet</Button>
+      <button @click="login()" class="btn">Login to Wallet</Button>
       <button @click="restoreBackup()" class="btn2">Restore a Backup CD</button>
+      <button @click="newWallet()" class="btn2">Create New Wallet</button>
   </div>
 </div>
 </template>
@@ -102,10 +103,13 @@ export default {
   restoreBackup(){
     store.commit('setDebug', 'restore Backup button clicked, sending user to restoreBackup flow')
     this.$router.push({ name: 'restoreBackup' })
-    //set a state value here that informs restore backup user is on the node machine
   },
   warn(){
     //show feedback
+  },
+  newWallet(){
+    store.commit('setDebug', 'create new wallet button clicked, sending user to setup1b')
+    this.$router.push({ name: 'Setup1b' })
   },
   startBitcoin(){
     store.commit('setDebug', 'proceed button clicked, checking network connection again')
@@ -154,6 +158,8 @@ export default {
   }
  },
   mounted(){
+    //set a state value here that informs restore backup user is on the node machine
+    store.commit('setNode', true)
     store.commit('setDebug', 'Arrived at Node')
     store.commit('setDebug', 'checking network connection')
     store.commit('setLoadMessage', `Checking Network Connection...`)

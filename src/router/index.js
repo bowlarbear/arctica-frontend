@@ -685,16 +685,6 @@ const routes = [
     component: () => import('../views/setup/50a.vue')
    },
    {
-    path: '/setup/50b',
-    name: 'Setup50b',
-    component: () => import('../views/setup/50b.vue')
-   },
-   {
-    path: '/setup/51',
-    name: 'Setup51',
-    component: () => import('../views/setup/51.vue')
-   },
-   {
     path: '/tripwire/setup/1',
     name: 'tripwirePostSetup1',
     component: () => import('../views/post-setup/tripwire1.vue')

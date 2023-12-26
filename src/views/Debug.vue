@@ -7,7 +7,7 @@
         <h2 v-for="item in this.debug" :key="item">{{item}}</h2>
     <div class="btn_container"> 
 
-        <h2>Arctica Version: 0.1223</h2>
+        <h2>Arctica Version: 0.1224</h2>
 
         <h2>Current Route: {{this.$route.name}}</h2>
 

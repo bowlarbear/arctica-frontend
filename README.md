@@ -1,7 +1,7 @@
 # arctica-frontend
 
 ### Warning: This program is a front end wrapper and is only intended to be run when compiled within the arctica backend.
-### Main Repo: https:://github.com/wild-kard/arctica
+### Main Repo: https:://github.com/bowlarbear/arctica
 
 ## Install Vue
 ```

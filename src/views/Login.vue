@@ -162,6 +162,7 @@ export default {
                     //eventually need to add front end feedback here prompting the user on what to do next rather than send to fatal error screen
                     store.commit('setDebug', `error copying CD to ramdisk Error code: Login4 Response: ${e}`)
                     this.badCD = true
+                    this.loading = false
                 })
             }
             //use this condition for when user has a bricked bps relationship but has not indicated they already have a transfer CD with a masterkey 

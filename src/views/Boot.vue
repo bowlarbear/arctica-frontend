@@ -10,7 +10,7 @@ the second conditional rendering below appears if the user has booted from HW 2-
       <h1>Welcome to Arctica</h1>
       <h2>Please insert a transfer CD.</h2>
       <h2>If you do not have a transfer CD, please insert Hardware Wallet 1 and reboot this machine.</h2>
-      <h2>If you would like to restore a backup CD, click to proceed.</h2>
+      <h2>If you would like to restore a backup CD, reboot your Arctica node without any hardware wallet media inserted.</h2>
       <h4 v-if="this.fullySigned == true">* Please switch to HW 1, your PSBT is fully signed</h4>
       <h4 v-if="this.badCD == true">* Error reading the CD. Please reinsert and try again</h4>
       <h4 v-if="this.noPSBT == true">* No PSBT Found on CD. Please log in to HW 1 to create a PSBT.</h4>

@@ -25,7 +25,7 @@ const invoke = window.__TAURI__.invoke
       store.commit('setDebug', 'arrived at restoreInit')
       store.commit('setLoadMessage', 'Installing HW dependencies...')
       //install deps
-      invoke('install_hw_deps').then((res) => {
+      invoke('install_cold_deps').then((res) => {
         store.commit('setDebug', `installing HW dependencies ${res}`)
         //update setupStep to default
         store.commit('setLoadMessage', 'Updating state...')

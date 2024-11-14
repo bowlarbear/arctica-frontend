@@ -182,30 +182,39 @@ export default {
         invoke('init_bitcoind').then((res) => {
           store.commit('setDebug', `Bitcoin initialized: ${res}`)
           store.commit('setLoadMessage', `Starting Bitcoin Core...`)
-        //start Bitcoin core
-        invoke('start_bitcoind', {reindex: false, networkactive: true, wallets: false}).then((res)=> {
-          store.commit('setDebug', `started bitcoin daemon ${res}`)
-          store.commit('setDebug', 'starting check sync status')
-          store.commit('setLoadMessage', `Syncing Bitcoin Core...Ensure you stay connected to the internet`)
-            invoke('check_bitcoin_sync_status').then((res)=>{
-              store.commit('setDebug', `sync successful${res}`)
-              //disable the loading component
-              this.loading = false
-            }).catch((e)=>{
-              store.commit('setDebug', `Error checking sync status: ${e}`)
+          invoke('create_ramdisk').then((res) => {
+            store.commit('setDebug', `creating ramdisk ${res}`)
+            store.commit('setLoadMessage', `Creating Ramdisk...`)
+            //start Bitcoin core
+            invoke('start_bitcoind', {reindex: false, networkactive: true, wallets: false}).then((res)=> {
+              store.commit('setDebug', `started bitcoin daemon ${res}`)
+              store.commit('setDebug', 'starting check sync status')
+              store.commit('setLoadMessage', `Syncing Bitcoin Core...Ensure you stay connected to the internet`)
+                invoke('check_bitcoin_sync_status').then((res)=>{
+                  store.commit('setDebug', `sync successful${res}`)
+                  //disable the loading component
+                  this.loading = false
+                }).catch((e)=>{
+                  store.commit('setDebug', `Error checking sync status: ${e}`)
+                })
+            }).catch((e)=> {
+              //fatal error starting bitcoin daemon
+              store.commit('setDebug', `error starting bitcoin daemon error: ${e}`)    
+              store.commit('setErrorMessage', `Error Starting Bitcoin Daemon Error code: Node-1 Response: ${e}`)
+              this.$router.push({ name: 'Error' })      
             })
-        }).catch((e)=> {
-          //fatal error starting bitcoin daemon
-          store.commit('setDebug', `error starting bitcoin daemon error: ${e}`)    
-          store.commit('setErrorMessage', `Error Starting Bitcoin Daemon Error code: Node-1 Response: ${e}`)
-          this.$router.push({ name: 'Error' })      
-        })  
-      }).catch((e)=>{
-        //fatal error init bitcoin daemon
-        store.commit('setDebug', `error initializing bitcoin daemon error: ${e}`)    
-        store.commit('setErrorMessage', `Error initializing Bitcoin Daemon Error code: Node-5 Response: ${e}`)
-        this.$router.push({ name: 'Error' })
-      })
+          }).catch((e)=>{
+            //fatal error create ramdisk
+            store.commit('setDebug', `error creating ramdisk error: ${e}`)    
+            store.commit('setErrorMessage', `Error creating ramdisk Error code: Node-8 Response: ${e}`)
+            this.$router.push({ name: 'Error' })
+          })
+        }).catch((e)=>{
+          //fatal error init bitcoin daemon
+          store.commit('setDebug', `error initializing bitcoin daemon error: ${e}`)    
+          store.commit('setErrorMessage', `Error initializing Bitcoin Daemon Error code: Node-5 Response: ${e}`)
+          this.$router.push({ name: 'Error' })
+        })
       }
     }).catch((e) => {
       //no network connection, show feedback

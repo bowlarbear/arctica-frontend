@@ -92,8 +92,8 @@ methods: {
                         store.commit('setDebug', `distributing 1 shard to Hardware Wallet ${res}`)
                         store.commit('setLoadMessage', 'Installing dependencies...')
                         //install wodim & ssss
-                        invoke('install_cold_deps').then((res) => {
-                                store.commit('setDebug', `installing HW dependencies ${res}`)
+                        invoke('install_hw_deps', {warm: false}).then((res) => {
+                                store.commit('setDebug', `installing cold HW dependencies ${res}`)
                                 store.commit('setLoadMessage', 'Refreshing setup CD...')
                                     //refresh setup CD with latest .iso 
                                     invoke('refresh_cd', {psbt: false}).then((res)=>{

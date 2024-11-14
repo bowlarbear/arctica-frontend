@@ -87,7 +87,7 @@ export default {
               store.commit('setDebug', 'Initializing New Session, Sending user to Login')
               store.commit('setLoadMessage', 'Installing system updates...')
               //install the required dependencies for a warm wallet
-              invoke('install_warm_deps').then((res) => {
+              invoke('install_hw_deps', {warm: true}).then((res) => {
                 store.commit('setDebug', `Installing Warm Depdencies and security updates: ${res}`)
                 this.loading = false
                 this.$router.push({ name: 'Login'})

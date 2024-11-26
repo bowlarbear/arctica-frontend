@@ -45,15 +45,17 @@
 </div>
 
 <div v-else class="page">
+<header>
   <h1>Welcome to Arctica</h1>
   <h2>You should keep this app running to ensure your Bitcoin Node stays synced.</h2>
   <h2>Always ensure you properly shutdown Arctica before turning off this computer.</h2>
-  <h2>Please avoid clicking the "X" Button to close the app.</h2>
   <h2>What would you like to do?</h2>
+</header>
   <div class="btn_container"> 
       <button @click="login()" class="btn">Login to Wallet</Button>
       <button @click="restoreBackup()" class="btn2">Restore a Backup CD</button>
       <button @click="newWallet()" class="btn2">Create New Wallet</button>
+      <button @click="shutDown()" class="btn2">Shutdown Arctica</button>
   </div>
 </div>
 </template>
